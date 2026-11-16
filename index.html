@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mizan</title>
+    <meta name="description" content="mizan est une platform qui met en disponibilité de ses utilisateurs tous les changements qui concernent les metaux.">
+    <link rel="stylesheet" href="./assets/tailwind.css">
+    <script type="module" src="src/app.js" defer></script>
+    <script type="module" src="src/metalCarte.js" defer></script>
+</head>
+<body>
+    <header class="flex bg-blue-950 justify-between">
+        <div class= "py-2 flex">
+            <div>
+                <img class="w-40 h-20" src="assets/images/Balance de justice dorée sur fond transparent.png" alt="logo de mizan">
+            </div>
+            <div>
+                <h1 class="text-white font-serif text-5xl py-3  ">Mizan</h1>
+            </div>
+        </div>
+        <div class="flex justify-evenly">
+        <select class="text-white border rounded bg-blue-950 h-10 w-30 my-10" name="choixdevise" id="choixdevise">
+            <option value="USD">USD</option>
+            <option value="MAD">MAD</option>
+            <option value="EUR">EUR</option>
+        </select>
+        <div>
+            <button id="Actualiser" class="text-black font-serif text-xl h-10 w-30 my-10 mx-20 border rounded bg-slate-50">Actualiser</button>
+            <p id="message d'attente" class="font-mono text-white hidden"></p>
+        </div>
+        <a class="border rounded font-serif text-xl bg-white text-black h-10 my-10 mx-5 w-30 py-1 px-1" href="fichier.html">Nos Articles</a>
+        </div>
+    </header>
+    <main>
+        <section class="flex justify-center">
+            <p id="erreur" class="font-semibold text-2xl text-red-700 hidden"></p>
+        </section>
+
+
+        <section class="flex justify-end">
+            <div>
+                <h1 class="text-4xl font-bold flex justify-start pt-30 flex-nowrap">Suivez les prix de l'or et de l'argent</h1>
+                <h4 class="text-xl font-serif pt-4 ">Restez informer des derniers changements en temps réel</h4>
+            </div>
+            <div class="flex  py-0">
+                <img class="h-80 w-150" src="assets/images/hero.png" alt="hero de mizan">
+            </div>
+        </section>
+
+
+        <section class="flex justify-evenly mx-10 border rounded-2xl px-1 my-10 h-20">
+            <div class="grid grid-cols-1 mt-3">
+                <p class="font-semibold text-2xl">Dernière mise à jour</p>
+                <p class="font-bold text-xl flex justify-center" id="temps">Time</p>
+            </div>
+            <div class="grid grid-cols-1 mt-3">
+                <p id="statusAPP" class="font-semibold text-2xl"></p>
+                <p id="statuserreur" class="font-serif text-xl flex justify-center">Aucune erreur détectée</p>
+            </div>
+            <div class="flex gap-2">
+                <p class="font-semibold text-2xl my-5">Status: <span id="status" class="font-serif text-xl mt-9"></span></p>
+            </div>
+        </section>
+
+
+        <section id="metaux" class="grid grid-cols-2 gap-4 mx-10">
+            <metal-card metal = "xau"></metal-card>
+            <metal-card metal = "xag"></metal-card>
+        </section>
+
+
+                   
+
+            <section>
+            <article class=" mx-7 border border-black rounded-2xl mt-10">
+                <div class="absolute">
+                    <h1 class="text-black text-2xl font-bold py-5 px-5">Estimer la valeur d'un bijoux</h1>
+                </div>
+    <div class="w-300 flex gap-30">
+            <div class="grid grid-cols-1 gap-3">
+                    <h2 class="font-semibold pt-10 px-10 mt-10">Poids (en gramme):</h2>
+                    <div>
+                    <input id="poids" class="border  rounded border-black md:w-100 w-50 h-10 mx-10 px-10" type="number" placeholder="Exemple:10">
+                    </div>
+                <button id="Calculer" class="border rounded-xl h-10 w-50 mx-35 bg-yellow-500 font-semibold text-xl py-1">Calculer</button>
+            </div>
+            <div class="w-50 grid grid-cols-1 align-items">
+                <p class="font-semibold pt-10 mt-10">Type de metal:</p>
+            <select name="metaux" id="metauxCalcul" class="border rounded bg-white text-blue-950 h-10">
+                <option value="Or">Or</option>
+                <option value="Argent">Argent</option>
+            </select>
+            </div>
+
+                <div class="border rounded-xl px-1 py-10 my-5 mx-10 bg-amber-100 grid justify-center h-50 w-105">
+                    <h2 class="font-bold text-xl">Valeur Estimée:</h2>
+                    <div class="flex font-semibold text-5xl gap-0">
+                        <p id="montantBijoux" class="font-semibold text-4xl">------</p>
+                        <p>DH</p>
+                    </div>
+                    <p class="text-xl" id="messageestimation">Entrée un poids pour estimer la valeur</p>
+                </div>
+    </div>
+            
+            </article>
+        </section>
+
+
+
+
+<section class="mx-7 px-10 py-10 mt-10 rounded-2xl border border-gray-200 bg-white p-6 h-100">
+
+    <div>
+        <p class="text-2xl font-bold text-gray-900">
+            Historique de prix
+        </p>
+        <p class="text-sm text-gray-500">
+            Consultez l'évolution du prix des métaux
+        </p>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-4">
+
+        <select name="metalhistorique" id="historiqueMetal"
+            class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700">
+            <option value="Or">Or</option>
+            <option value="Argent">Argent</option>
+        </select>
+
+        <select name="periode" id="periode"
+            class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700">
+            <option value="semaine">7-Jours</option>
+            <option value="mois">30-Jours</option>
+        </select>
+
+    </div>
+
+    <div id="graphiqueHistorique" class="mt-8 w-full flex items-end gap-2 h-64">
+        <!-- Graphique historique -->
+    </div>
+
+</section>
+
+        
+
+    </main>
+    <footer>
+        <div class="flex flex-col items-center mt-10">
+            <p class="text-2xl font-semibold">Rester a-jour grace a Mizan</p>
+            <p class="text-xl font-thin">Toute l'actualité des métaux précieux a votre disposition</p>
+        </div>
+    </footer>
+</body>
+</html>
