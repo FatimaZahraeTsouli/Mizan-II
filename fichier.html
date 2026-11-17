@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mizan</title>
+    <meta name="description" content="mizan est une platform qui met en disponibilité de ses utilisateurs tous les changements qui concernent les metaux.">
+    <link rel="stylesheet" href="./assets/tailwind.css">
+    <script type="module" src="./partie-2/main.js" defer></script>
+</head>
+<body>
+    <header class="flex bg-blue-950 justify-between">
+        <div class= "py-2 flex">
+            <div>
+                <img class="w-40 h-20" src="assets/images/Balance de justice dorée sur fond transparent.png" alt="logo de mizan">
+            </div>
+            <div>
+                <h1 class="text-white font-serif text-5xl py-3  ">Mizan</h1>
+            </div>
+        </div>
+    </header>
+    <main>
+
+        <section class="flex justify-end">
+            <div>
+                <h1 class="text-4xl font-bold flex justify-start pt-30  flex-nowrap">Catalogue de bijoux</h1>
+                <h4 class="text-xl font-serif pt-4 ">Consulter et gérer la collection Al Andalous</h4>
+            </div>
+            <div class="flex  py-0">
+                <img class="h-80 w-150" src="assets/images/hero.png" alt="hero de mizan">
+            </div>
+        </section>
+
+        <section class="flex gap-40 justify-evenly border rounded h-35 bg-blue-950 text-white">
+        <div >
+            <input class="border rounded bg-white text-black font-serif my-10 h-10" id="rechercher" type="text" placeholder="Rechercher">
+        </div>
+        <div>
+            <select class="border rounded bg-white text-black font-serif my-10 h-10 w-50" name="statut" id="statut">
+                <option value="disponible">Disponible</option>
+                <option value="indisponible">Indisponible</option>
+                <option value="tous">Tous</option>
+            </select>
+        </div>
+        <div>
+            <select class="border rounded bg-white text-black font-serif my-10 h-10 w-50" name="trier" id="Trier">
+                <option value="ordreA">Titre: (A -> Z)</option>
+                <option value="ordreP">Prix: croissant</option>
+                <option value="ordreD">Date: récent</option>
+            </select>
+        </div>
+        </section>
+        <section>
+            <div id="listesbijoux">
+                
+
+            </div>
+        </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </main>
+        <footer>
+        <div class="flex flex-col items-center mt-10">
+            <p class="text-2xl font-semibold">Rester a-jour grace a Mizan</p>
+            <p class="text-xl font-thin">Toute l'actualité des métaux précieux a votre disposition</p>
+        </div>
+    </footer>
+</body>
+</html>
