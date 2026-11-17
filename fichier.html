@@ -7,6 +7,9 @@
     <meta name="description" content="mizan est une platform qui met en disponibilité de ses utilisateurs tous les changements qui concernent les metaux.">
     <link rel="stylesheet" href="./assets/tailwind.css">
     <script type="module" src="./partie-2/main.js" defer></script>
+    <script type="module" src="./partie-2/api.js" defer></script>
+    <script type="module" src="./partie-2/articles.js" defer></script>
+    <script type="module" src="./partie-2/ui.js" defer></script>
 </head>
 <body>
     <header class="flex bg-blue-950 justify-between">
@@ -37,6 +40,7 @@
         </div>
         <div>
             <select class="border rounded bg-white text-black font-serif my-10 h-10 w-50" name="statut" id="statut">
+                <option value="null" disabled selected>statut</option>
                 <option value="disponible">Disponible</option>
                 <option value="indisponible">Indisponible</option>
                 <option value="tous">Tous</option>
@@ -44,14 +48,15 @@
         </div>
         <div>
             <select class="border rounded bg-white text-black font-serif my-10 h-10 w-50" name="trier" id="Trier">
+                <option value="null" disabled selected>Trier par</option>
                 <option value="ordreA">Titre: (A -> Z)</option>
                 <option value="ordreP">Prix: croissant</option>
                 <option value="ordreD">Date: récent</option>
             </select>
         </div>
         </section>
-        <section>
-            <div id="listesbijoux">
+        <section id="listesbijoux" class="grid grid-cols-3 gap-6">
+            <div>
                 
 
             </div>
