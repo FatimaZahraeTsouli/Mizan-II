@@ -1,0 +1,9 @@
+.article-carte {
+    border:1px solid black;
+    border-radius: 12px;
+    width: 500px;
+    padding: 20px;
+    height: 200px;
+    background-color: whitesmoke;
+    margin-bottom: 15px;
+}

@@ -2,6 +2,8 @@ import {recupererArticle} from "./api.js"
 
 const listesbijoux = document.getElementById("listesbijoux");
 
+// creer les carte dynamiquement
+
 export function carte(article){
     const carte = document.createElement("div");
     carte.classList.add("article-carte");
@@ -16,5 +18,12 @@ export function carte(article){
     listesbijoux.appendChild(carte);
 }
 
+// affcher les cartes dans la page 
 
+export function afficherArticles(articles) {
+    listesbijoux.innerHTML = "";
 
+    articles.forEach(article => {
+        carte(article);
+    });
+}

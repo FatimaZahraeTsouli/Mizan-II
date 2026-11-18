@@ -1,3 +1,5 @@
+// Get data 
+
 export async function recupererArticle(){
     const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
         method : "GET"
@@ -6,7 +8,7 @@ export async function recupererArticle(){
     console.log(data[0]);
     return data;
 }
-// recupererArticle();
+
 
 
 
