@@ -8,9 +8,6 @@
     <link rel="stylesheet" href="./assets/tailwind.css">
     <link rel="stylesheet" href="./style.css">
     <script type="module" src="./partie-2/main.js" defer></script>
-    <!-- <script type="module" src="./partie-2/api.js" defer></script> -->
-    <!-- <script type="module" src="./partie-2/articles.js" defer></script> -->
-    <!-- <script type="module" src="./partie-2/ui.js" defer></script> -->
 </head>
 <body>
     <header class="flex bg-blue-950 justify-between">
@@ -35,7 +32,46 @@
             </div>
         </section>
 
-        <section class="flex gap-40 justify-evenly border rounded h-35 bg-blue-950 text-white">
+        <form class="border border-gray-500 rounded-xl bg-white p-8 h-200 px-10" id="form">
+
+                <h2 class="text-xl font-semibold text-blue-950 mt-10 mb-6"> Ajouter un article </h2>
+
+            <div class="grid grid-cols-3 gap-6 mt-10">
+                <div class="flex flex-col gap-2">
+                    <label class="font-medium text-gray-700 text-2xl" for="title">Titre</label>
+                    <input class="border border-gray-300 rounded-lg px-4 py-3" type="text" id="titreajout" required>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="font-medium text-gray-700 text-2xl" for="description">Description</label>
+                    <input class="border border-gray-300 rounded-lg px-4 py-3" type="text" id="descriptionajout" required>
+                </div>
+                <div  class="flex flex-col gap-2">
+                    <label class="font-medium text-gray-700 text-2xl" for="statut">Statut</label>
+                    <input class="border border-gray-300 rounded-lg px-4 py-3" type="text" id="statutajout">
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="font-medium text-gray-700 text-2xl" for="prix">Prix</label>
+                    <input class="border border-gray-300 rounded-lg px-4 py-3" type="number" id="prixajout" required>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="font-medium text-gray-700 text-2xl" for="date">Date</label>
+                    <input class="border border-gray-300 rounded-lg px-4 py-3" type="date" id="dateajout">
+                </div>
+            </div>
+
+            <div class="flex justify-center gap-4 mt-8">
+                <button class="bg-blue-950 text-white px-6 py-2 rounded-lg w-50" type="submit" id="ajouter">Ajouter</button>
+                <button class="border border-gray-300 text-gray-600 px-6 py-2 rounded-lg w-50" type="button" id="annuler">Annuler</button>
+            </div>
+            <p class="text-blue-900 hidden" id="chargement">Ajout en cours...</p>
+            <div>
+                <p class="text-red-500 text-center text-xl font-semibold hidden" id="messageerreur"></p>
+            </div>
+        </form>
+
+
+
+        <section class="flex gap-40 justify-evenly border rounded h-35 bg-blue-950 text-white mt-10">
         <div >
             <input class="border rounded bg-white text-black font-serif my-10 h-10" id="rechercher" type="text" placeholder="Rechercher">
         </div>

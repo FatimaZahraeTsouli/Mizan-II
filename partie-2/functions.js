@@ -10,9 +10,6 @@ export function rechercher(articles, input){
     });
     return result;
 } 
-
-
-
 // fonction filtrer 
 
 export function filtrer(articles, statutinput){
@@ -24,9 +21,7 @@ export function filtrer(articles, statutinput){
     return results;
 }
 
-
 // fonction trier
-
 export function trier(articles, trierinput){
     switch (trierinput){
         case "ordreA": 
@@ -48,3 +43,24 @@ export function trier(articles, trierinput){
     return articles
 }
 
+// fonction valider
+
+export function validerarticle(article){
+    if (article.title.length < 3 || article.title.length > 80){
+        article.erreur.classList.remove("hidden");
+        article.erreur.textContent = "le titre doit contenir entre 3 et 80 caractères !!!"
+        return false;
+    }
+    else if (article.body.length < 10){
+        article.erreur.classList.remove("hidden");
+        article.erreur.textContent = "la description doit contenir au moins 10 caractères!!!"
+        return false;
+    }
+    else if (article.prix <= 0 || article.prix === ""){
+        article.erreur.classList.remove("hidden");
+        article.erreur.textContent = "le prix est invalide !!!"
+        return false;
+    }
+    article.erreur.classList.add("hidden");
+    return true
+}
