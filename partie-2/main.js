@@ -58,6 +58,43 @@ trierinput.addEventListener("change", function(){
 
 form.addEventListener("submit", async function(event){
     event.preventDefault();
+    const articleId = getid();
+    if (articleId !== null){
+        const articlemodifier = {
+        title : titreajout.value,
+        body : descriptionajout.value,
+        statut : statutajout.value,
+        prix : Number(prixajout.value),
+        date : dateajout.value,
+        erreur: messageerreur
+        };
+        const validation = validerarticle(articlemodifier);
+        if (!validation){
+            return;
+        }
+        ajouter.disabled = true;
+        chargement.classList.remove("hidden");
+    try {
+        const resultatmodifier = await modifierArticle(articleId, articlemodifier);
+        const index = tableauarticles.findIndex(article => article.id === articleId);
+        tableauarticles[index] = resultatmodifier;
+        afficherArticles(tableauarticles);
+        messageerreur.classList.add("hidden");
+        chargement.textContent = "Modifier avec succés";
+        chargement.classList.remove("hidden");
+        chargement.classList.add("text-green-500");     
+    } catch(erreur){
+        messageerreur.classList.remove("hidden");
+        messageerreur.textContent = erreur.message;
+        chargement.textContent = "Echec de modification!!";
+        chargement.classList.add("text-red-500");  
+    }finally{
+        ajouter.disabled = false;
+        ajouter.textContent = "Ajouter";
+    }
+
+        
+    }else {
     const article = {
         title : titreajout.value,
         body : descriptionajout.value,
@@ -79,22 +116,23 @@ try {
     tableauarticles.unshift(resultat);
     afficherArticles(tableauarticles);
     messageerreur.classList.add("hidden");
-    chargement.textContent = "charger avec succés";
+    chargement.textContent = "Charger avec succés";
     chargement.classList.remove("hidden");
     chargement.classList.add("text-green-500");
 } catch (erreur) {
     messageerreur.classList.remove("hidden");
     messageerreur.textContent = erreur.message;
-    chargement.textContent = "echec de chargement!!";
+    chargement.textContent = "Echec de chargement!!";
     chargement.classList.add("text-red-500");
 } finally {
     ajouter.disabled = false ;
-}
+}}
 })
 
 
 
-const articleId = getid();
+        
+        
 
 
 

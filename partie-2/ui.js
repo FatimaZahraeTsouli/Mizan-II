@@ -7,6 +7,7 @@ const ajouter = document.getElementById("ajouter");
 const listesbijoux = document.getElementById("listesbijoux");
 
 // creer les carte dynamiquement
+let idArticleAModifier = null;
 let articleId = null;
 export function carte(article){
     const carte = document.createElement("div");
