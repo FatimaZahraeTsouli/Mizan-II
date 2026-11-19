@@ -72,6 +72,7 @@ form.addEventListener("submit", async function(event){
         prix : Number(prixajout.value),
         date : dateajout.value,
         buttonmodifier : "Modifier",
+        buttonremplacer : "Remplacer",
         erreur: messageerreur
         };
         const validation = validerarticle(articlemodifier);
@@ -131,7 +132,7 @@ form.addEventListener("submit", async function(event){
     } catch(erreur){
         messageerreur.classList.remove("hidden");
         messageerreur.textContent = erreur.message;
-        chargement.textContent = "Echec de modification!!";
+        chargement.textContent = "Echec de remplacement!!";
         chargement.classList.add("text-red-500");  
     }finally{
         ajouter.disabled = false;
