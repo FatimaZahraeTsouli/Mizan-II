@@ -22,6 +22,7 @@ export function filtrer(articles, statutinput){
 }
 
 // fonction trier
+
 export function trier(articles, trierinput){
     switch (trierinput){
         case "ordreA": 

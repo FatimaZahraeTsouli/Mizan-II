@@ -1,5 +1,5 @@
-import {recupererArticle, ajouterArticle} from "./api.js";
-import {afficherArticles} from "./ui.js";
+import {recupererArticle, ajouterArticle, modifierArticle} from "./api.js";
+import {afficherArticles, getid} from "./ui.js";
 import {rechercher, filtrer, trier, validerarticle} from "./functions.js";
 
 
@@ -30,7 +30,8 @@ tableauarticles = data.map(article => ({
     ...article,
     statut: "Disponible",
     prix: 100,
-    date: "2026-11-18"
+    date: "2026-11-18",
+    buttonmodifier: "Modifier"
 }));
 afficherArticles(tableauarticles);
 
@@ -63,6 +64,7 @@ form.addEventListener("submit", async function(event){
         statut : statutajout.value,
         prix : Number(prixajout.value),
         date : dateajout.value,
+        buttonmodifier : "Modifier",
         erreur : messageerreur
     };
     const validation = validerarticle(article);
@@ -91,6 +93,8 @@ try {
 })
 
 
+
+const articleId = getid();
 
 
 
