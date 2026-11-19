@@ -1,5 +1,5 @@
-import {recupererArticle, ajouterArticle, modifierArticle} from "./api.js";
-import {afficherArticles, getid} from "./ui.js";
+import {recupererArticle, ajouterArticle, modifierArticle, remplacerArticle,} from "./api.js";
+import {afficherArticles, getid, getMode} from "./ui.js";
 import {rechercher, filtrer, trier, validerarticle} from "./functions.js";
 
 
@@ -31,41 +31,47 @@ tableauarticles = data.map(article => ({
     statut: "Disponible",
     prix: 100,
     date: "2026-11-18",
-    buttonmodifier: "Modifier"
+    buttonmodifier: "Modifier",
+    buttonremplacer: "Remplacer"
 }));
 afficherArticles(tableauarticles);
 
 // rechercher data
 rechercherinput.addEventListener("input", function(){
-    const resultats = rechercher(articles, rechercherinput.value);
+    const resultats = rechercher(tableauarticles, rechercherinput.value);
     afficherArticles(resultats);
 
 });
 
 // fitrer data 
 statutinput.addEventListener("change", function(){
-    const resultats = filtrer(articles, statutinput);
+    const resultats = filtrer(tableauarticles, statutinput);
     afficherArticles(resultats);
 })
 
 // trier data 
 trierinput.addEventListener("change", function(){
-    const resultats = trier(articles, trierinput.value);
+    const resultats = trier(tableauarticles, trierinput.value);
     afficherArticles(resultats);
 })
 
 // ajouter un article 
 
+
 form.addEventListener("submit", async function(event){
     event.preventDefault();
     const articleId = getid();
+    const mode = getMode();
     if (articleId !== null){
+        if (mode === "modifier"){
+            console.log(mode);
         const articlemodifier = {
         title : titreajout.value,
         body : descriptionajout.value,
         statut : statutajout.value,
         prix : Number(prixajout.value),
         date : dateajout.value,
+        buttonmodifier : "Modifier",
         erreur: messageerreur
         };
         const validation = validerarticle(articlemodifier);
@@ -79,10 +85,12 @@ form.addEventListener("submit", async function(event){
         const index = tableauarticles.findIndex(article => article.id === articleId);
         tableauarticles[index] = resultatmodifier;
         afficherArticles(tableauarticles);
+        form.reset();
         messageerreur.classList.add("hidden");
         chargement.textContent = "Modifier avec succés";
         chargement.classList.remove("hidden");
-        chargement.classList.add("text-green-500");     
+        chargement.classList.add("text-green-500");
+           
     } catch(erreur){
         messageerreur.classList.remove("hidden");
         messageerreur.textContent = erreur.message;
@@ -91,6 +99,45 @@ form.addEventListener("submit", async function(event){
     }finally{
         ajouter.disabled = false;
         ajouter.textContent = "Ajouter";
+    }}
+    else if (mode === "remplacer"){
+        const articleremplacer = {
+        title : titreajout.value,
+        body : descriptionajout.value,
+        statut : statutajout.value,
+        prix : Number(prixajout.value),
+        date : dateajout.value,
+        buttonmodifier : "Modifier",
+        buttonremplacer : "Remplacer",
+        erreur: messageerreur
+        };
+        const validation = validerarticle(articleremplacer);
+        if (!validation){
+            return;
+        }
+        ajouter.disabled = true;
+        chargement.classList.remove("hidden");
+    try {
+        const resultatremplacer = await remplacerArticle(articleId, articleremplacer);
+        const index = tableauarticles.findIndex(article => article.id === articleId);
+        tableauarticles[index] = resultatremplacer;
+        afficherArticles(tableauarticles);
+        form.reset();
+        messageerreur.classList.add("hidden");
+        chargement.textContent = "Remplacer avec succés";
+        chargement.classList.remove("hidden");
+        chargement.classList.add("text-green-500");
+           
+    } catch(erreur){
+        messageerreur.classList.remove("hidden");
+        messageerreur.textContent = erreur.message;
+        chargement.textContent = "Echec de modification!!";
+        chargement.classList.add("text-red-500");  
+    }finally{
+        ajouter.disabled = false;
+        ajouter.textContent = "Ajouter";
+    }
+
     }
 
         
@@ -102,6 +149,7 @@ form.addEventListener("submit", async function(event){
         prix : Number(prixajout.value),
         date : dateajout.value,
         buttonmodifier : "Modifier",
+        buttonremplacer : "Remplacer",
         erreur : messageerreur
     };
     const validation = validerarticle(article);
@@ -115,6 +163,7 @@ try {
     const resultat = await ajouterArticle(article);
     tableauarticles.unshift(resultat);
     afficherArticles(tableauarticles);
+    form.reset();
     messageerreur.classList.add("hidden");
     chargement.textContent = "Charger avec succés";
     chargement.classList.remove("hidden");
@@ -125,7 +174,7 @@ try {
     chargement.textContent = "Echec de chargement!!";
     chargement.classList.add("text-red-500");
 } finally {
-    ajouter.disabled = false ;
+    ajouter.disabled = false;
 }}
 })
 

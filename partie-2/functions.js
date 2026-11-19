@@ -1,4 +1,3 @@
-
 // fonction rechercher 
 
 export function rechercher(articles, input){
