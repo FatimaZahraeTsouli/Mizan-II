@@ -65,3 +65,17 @@ export async function remplacerArticle(id, article){
 }
 
 
+// Supprimer data 
+
+export async function supprimerArticle(id){
+    const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+        method : "DELETE"
+    });
+    if (!response.ok){
+        throw new Error("Echec de suppression !!!");
+        
+    }
+
+    return true;
+}
+

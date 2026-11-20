@@ -1,4 +1,4 @@
-import {recupererArticle, ajouterArticle, modifierArticle, remplacerArticle,} from "./api.js";
+import {recupererArticle, ajouterArticle, modifierArticle, remplacerArticle, supprimerArticle} from "./api.js";
 import {afficherArticles, getid, getMode} from "./ui.js";
 import {rechercher, filtrer, trier, validerarticle} from "./functions.js";
 
@@ -32,7 +32,8 @@ tableauarticles = data.map(article => ({
     prix: 100,
     date: "2026-11-18",
     buttonmodifier: "Modifier",
-    buttonremplacer: "Remplacer"
+    buttonremplacer: "Remplacer",
+    buttonsupprimer: "Supprimer"
 }));
 afficherArticles(tableauarticles);
 
@@ -73,6 +74,7 @@ form.addEventListener("submit", async function(event){
         date : dateajout.value,
         buttonmodifier : "Modifier",
         buttonremplacer : "Remplacer",
+        buttonsupprimer : "Supprimer",
         erreur: messageerreur
         };
         const validation = validerarticle(articlemodifier);
@@ -110,6 +112,7 @@ form.addEventListener("submit", async function(event){
         date : dateajout.value,
         buttonmodifier : "Modifier",
         buttonremplacer : "Remplacer",
+        buttonsupprimer : "Supprimer",
         erreur: messageerreur
         };
         const validation = validerarticle(articleremplacer);
@@ -140,6 +143,29 @@ form.addEventListener("submit", async function(event){
     }
 
     }
+    else if (mode === "supprimer"){
+        chargement.textContent = "Suppression en cours"
+        chargement.classList.remove("hidden");
+    try {
+        await supprimerArticle(articleId);
+        tableauarticles = tableauarticles.filter(article => article.id !== articleId);
+        afficherArticles(tableauarticles);
+        form.reset();
+        messageerreur.classList.add("hidden");
+        chargement.textContent = "Suppression avec succés";
+        chargement.classList.remove("hidden");
+        chargement.classList.add("text-green-500");
+        console.log(articleId, typeof articleId);
+        console.log(tableauarticles[0].id, typeof tableauarticles[0].id);
+           
+    } catch(erreur){
+        messageerreur.classList.remove("hidden");
+        messageerreur.textContent = erreur.message;
+        chargement.textContent = "Echec de Suppression!!";
+        chargement.classList.add("text-red-500");  
+    }
+
+    }
 
         
     }else {
@@ -151,6 +177,7 @@ form.addEventListener("submit", async function(event){
         date : dateajout.value,
         buttonmodifier : "Modifier",
         buttonremplacer : "Remplacer",
+        buttonsupprimer : "Supprimer",
         erreur : messageerreur
     };
     const validation = validerarticle(article);
