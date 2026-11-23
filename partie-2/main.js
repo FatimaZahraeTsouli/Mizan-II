@@ -1,5 +1,5 @@
 import {recupererArticle, ajouterArticle, modifierArticle, remplacerArticle, supprimerArticle} from "./api.js";
-import {afficherArticles, getid, getMode} from "./ui.js";
+import {afficherArticles, getid, getMode, resetmode, titrevide, vide} from "./ui.js";
 import {rechercher, filtrer, trier, validerarticle} from "./functions.js";
 
 
@@ -21,8 +21,16 @@ const form = document.getElementById("form");
 
 // creer les carte dynamiquement
 let tableauarticles = [];
+chargement.classList.remove("hidden");
+chargement.classList.add("text-gray-500");
 const data = await recupererArticle();
 tableauarticles = data;
+chargement.textContent = "Chargés avec succés";
+setTimeout(() => {
+chargement.classList.add("hidden");
+}, 3000);
+chargement.classList.add("text-green-500");
+
 afficherArticles(tableauarticles);
 
 // ajouter data supplémentaire
@@ -41,6 +49,10 @@ afficherArticles(tableauarticles);
 rechercherinput.addEventListener("input", function(){
     const resultats = rechercher(tableauarticles, rechercherinput.value);
     afficherArticles(resultats);
+    if (resultats.length === 0){
+        titrevide.textContent = "Article non disponible!";
+        vide.textContent = "Aucun article ne correspondent a votre recherche!!";
+    }
 
 });
 
@@ -60,6 +72,10 @@ trierinput.addEventListener("change", function(){
 
 
 form.addEventListener("submit", async function(event){
+    console.count("Nombre de submit");
+    console.log("ID :", getid());
+console.log("Mode :", getMode());
+console.count("Submit");
     event.preventDefault();
     const articleId = getid();
     const mode = getMode();
@@ -82,7 +98,12 @@ form.addEventListener("submit", async function(event){
             return;
         }
         ajouter.disabled = true;
-        chargement.classList.remove("hidden");
+        chargement.textContent = "Modification en cours";
+        chargement.classList.add("text-gray-500");
+        chargement.classList.remove("hidden", "text-green-500");
+        setTimeout(() => {
+        chargement.classList.add("hidden");
+        }, 3000);
     try {
         const resultatmodifier = await modifierArticle(articleId, articlemodifier);
         const index = tableauarticles.findIndex(article => article.id === articleId);
@@ -92,12 +113,19 @@ form.addEventListener("submit", async function(event){
         messageerreur.classList.add("hidden");
         chargement.textContent = "Modifier avec succés";
         chargement.classList.remove("hidden");
+        setTimeout(() => {
+        chargement.classList.add("hidden");
+        }, 3000);  
         chargement.classList.add("text-green-500");
            
     } catch(erreur){
         messageerreur.classList.remove("hidden");
         messageerreur.textContent = erreur.message;
         chargement.textContent = "Echec de modification!!";
+        chargement.classList.remove("hidden");
+        setTimeout(() => {
+    chargement.classList.add("hidden");
+}, 3000);
         chargement.classList.add("text-red-500");  
     }finally{
         ajouter.disabled = false;
@@ -120,7 +148,12 @@ form.addEventListener("submit", async function(event){
             return;
         }
         ajouter.disabled = true;
-        chargement.classList.remove("hidden");
+        chargement.classList.remove("hidden", "text-green-500");
+        chargement.textContent = "Remplacement en cours";
+        chargement.classList.add("text-gray-500");
+        setTimeout(() => {
+    chargement.classList.add("hidden");
+}, 3000);
     try {
         const resultatremplacer = await remplacerArticle(articleId, articleremplacer);
         const index = tableauarticles.findIndex(article => article.id === articleId);
@@ -130,12 +163,19 @@ form.addEventListener("submit", async function(event){
         messageerreur.classList.add("hidden");
         chargement.textContent = "Remplacer avec succés";
         chargement.classList.remove("hidden");
+        setTimeout(() => {
+    chargement.classList.add("hidden");
+}, 3000);
         chargement.classList.add("text-green-500");
            
     } catch(erreur){
         messageerreur.classList.remove("hidden");
         messageerreur.textContent = erreur.message;
         chargement.textContent = "Echec de remplacement!!";
+        chargement.classList.remove("hidden");
+        setTimeout(() => {
+    chargement.classList.add("hidden");
+}, 3000);
         chargement.classList.add("text-red-500");  
     }finally{
         ajouter.disabled = false;
@@ -144,28 +184,47 @@ form.addEventListener("submit", async function(event){
 
     }
     else if (mode === "supprimer"){
-        chargement.textContent = "Suppression en cours"
-        chargement.classList.remove("hidden");
+        chargement.textContent = "Suppression en cours";
+        chargement.classList.add("text-gray-500");
+        chargement.classList.remove("hidden", "text-green-500");
+        setTimeout(() => {
+    chargement.classList.add("hidden");
+}, 3000);
     try {
         await supprimerArticle(articleId);
         tableauarticles = tableauarticles.filter(article => article.id !== articleId);
         afficherArticles(tableauarticles);
+        console.log("Suppression terminée");
+console.log("Mode :", getMode());
+console.log("Articles :", tableauarticles);
+console.log("Bouton ajouter désactivé :", ajouter.disabled);
         form.reset();
         messageerreur.classList.add("hidden");
-        chargement.textContent = "Suppression avec succés";
+        chargement.textContent = "Supprimer avec succés";
         chargement.classList.remove("hidden");
+        setTimeout(() => {
+    chargement.classList.add("hidden");
+}, 3000);
         chargement.classList.add("text-green-500");
-        console.log(articleId, typeof articleId);
-        console.log(tableauarticles[0].id, typeof tableauarticles[0].id);
+        resetmode();
            
     } catch(erreur){
+        // tableauarticles.push(articleId);
         messageerreur.classList.remove("hidden");
         messageerreur.textContent = erreur.message;
         chargement.textContent = "Echec de Suppression!!";
         chargement.classList.add("text-red-500");  
+        chargement.classList.remove("hidden");
+        setTimeout(() => {
+    chargement.classList.add("hidden");
+}, 3000);
     }
 
-    }
+    
+    finally {
+    ajouter.disabled = false;
+    ajouter.textContent = "Ajouter";
+}}
 
         
     }else {
@@ -185,7 +244,12 @@ form.addEventListener("submit", async function(event){
         return;
     }
     ajouter.disabled = true ;
-    chargement.classList.remove("hidden");
+    chargement.classList.remove("hidden", "text-green-500");
+    chargement.textContent = "Ajout en cours";
+    chargement.classList.add("text-gray-500");
+    setTimeout(() => {
+    chargement.classList.add("hidden");
+}, 3000);
     
 try {
     const resultat = await ajouterArticle(article);
@@ -193,13 +257,20 @@ try {
     afficherArticles(tableauarticles);
     form.reset();
     messageerreur.classList.add("hidden");
-    chargement.textContent = "Charger avec succés";
-    chargement.classList.remove("hidden");
+    chargement.textContent = "Ajouter avec succés";
     chargement.classList.add("text-green-500");
+    chargement.classList.remove("hidden");
+    setTimeout(() => {
+    chargement.classList.add("hidden");
+}, 3000);
 } catch (erreur) {
     messageerreur.classList.remove("hidden");
     messageerreur.textContent = erreur.message;
-    chargement.textContent = "Echec de chargement!!";
+    chargement.textContent = "Echec d'ajout!!";
+    chargement.classList.remove("hidden");
+    setTimeout(() => {
+    chargement.classList.add("hidden");
+}, 3000);
     chargement.classList.add("text-red-500");
 } finally {
     ajouter.disabled = false;
