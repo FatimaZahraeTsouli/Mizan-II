@@ -12,29 +12,23 @@ const statutajout = document.getElementById("statutajout");
 const prixajout = document.getElementById("prixajout");
 const dateajout = document.getElementById("dateajout");
 const ajouter = document.getElementById("ajouter");
-const annuler = document.getElementById("annuler");
 const messageerreur = document.getElementById("messageerreur");
 const chargement = document.getElementById("chargement");
 const form = document.getElementById("form");
+const reessayer = document.getElementById("reessayer");
 
 
 
 // creer les carte dynamiquement
-let tableauarticles = [];
-chargement.classList.remove("hidden");
-chargement.classList.add("text-gray-500");
-const data = await recupererArticle();
-tableauarticles = data;
-chargement.textContent = "Chargés avec succés";
-setTimeout(() => {
-chargement.classList.add("hidden");
-}, 3000);
-chargement.classList.add("text-green-500");
-
-afficherArticles(tableauarticles);
-
 // ajouter data supplémentaire
-tableauarticles = data.map(article => ({
+let tableauarticles = [];
+async function chargerarticle(){
+reessayer.classList.add("hidden");
+chargement.classList.add("text-gray-500");
+chargement.classList.remove("hidden", "text-green-500", "text-red-500");
+try {
+    const data = await recupererArticle();
+    tableauarticles = data.map(article => ({
     ...article,
     statut: "Disponible",
     prix: 100,
@@ -43,7 +37,26 @@ tableauarticles = data.map(article => ({
     buttonremplacer: "Remplacer",
     buttonsupprimer: "Supprimer"
 }));
-afficherArticles(tableauarticles);
+    chargement.textContent = "Chargés avec succés";
+    chargement.classList.add("text-green-500");
+    afficherArticles(tableauarticles);
+} catch (error) {
+    chargement.textContent = error.message;
+    chargement.classList.add("text-red-500");
+    reessayer.classList.remove("hidden");   
+}
+finally{
+    setTimeout(() => {
+    chargement.classList.add("hidden");
+    }, 3000);
+}
+}
+chargerarticle();
+
+reessayer.addEventListener("click", function(){
+    chargerarticle();
+})
+
 
 // rechercher data
 rechercherinput.addEventListener("input", function(){
@@ -72,10 +85,6 @@ trierinput.addEventListener("change", function(){
 
 
 form.addEventListener("submit", async function(event){
-    console.count("Nombre de submit");
-    console.log("ID :", getid());
-console.log("Mode :", getMode());
-console.count("Submit");
     event.preventDefault();
     const articleId = getid();
     const mode = getMode();
@@ -100,7 +109,7 @@ console.count("Submit");
         ajouter.disabled = true;
         chargement.textContent = "Modification en cours";
         chargement.classList.add("text-gray-500");
-        chargement.classList.remove("hidden", "text-green-500");
+        chargement.classList.remove("hidden", "text-green-500", "text-red-500");
         setTimeout(() => {
         chargement.classList.add("hidden");
         }, 3000);
@@ -112,21 +121,22 @@ console.count("Submit");
         form.reset();
         messageerreur.classList.add("hidden");
         chargement.textContent = "Modifier avec succés";
-        chargement.classList.remove("hidden");
+        chargement.classList.add("text-green-500");
+        chargement.classList.remove("hidden", "text-gray-500", "text-red-500");
         setTimeout(() => {
         chargement.classList.add("hidden");
         }, 3000);  
-        chargement.classList.add("text-green-500");
+        resetmode();
            
     } catch(erreur){
         messageerreur.classList.remove("hidden");
         messageerreur.textContent = erreur.message;
+        chargement.classList.add("text-red-500");
         chargement.textContent = "Echec de modification!!";
-        chargement.classList.remove("hidden");
+        chargement.classList.remove("hidden", "text-green-500", "text-gray-500");
         setTimeout(() => {
     chargement.classList.add("hidden");
 }, 3000);
-        chargement.classList.add("text-red-500");  
     }finally{
         ajouter.disabled = false;
         ajouter.textContent = "Ajouter";
@@ -148,7 +158,7 @@ console.count("Submit");
             return;
         }
         ajouter.disabled = true;
-        chargement.classList.remove("hidden", "text-green-500");
+        chargement.classList.remove("hidden", "text-green-500", "text-red-500");
         chargement.textContent = "Remplacement en cours";
         chargement.classList.add("text-gray-500");
         setTimeout(() => {
@@ -162,17 +172,18 @@ console.count("Submit");
         form.reset();
         messageerreur.classList.add("hidden");
         chargement.textContent = "Remplacer avec succés";
-        chargement.classList.remove("hidden");
+        chargement.classList.remove("hidden", "text-red-500", "text-gray-500");
         setTimeout(() => {
     chargement.classList.add("hidden");
 }, 3000);
         chargement.classList.add("text-green-500");
+        resetmode();
            
     } catch(erreur){
         messageerreur.classList.remove("hidden");
         messageerreur.textContent = erreur.message;
         chargement.textContent = "Echec de remplacement!!";
-        chargement.classList.remove("hidden");
+        chargement.classList.remove("hidden", "text-green-500", "text-gray-500");
         setTimeout(() => {
     chargement.classList.add("hidden");
 }, 3000);
@@ -186,7 +197,7 @@ console.count("Submit");
     else if (mode === "supprimer"){
         chargement.textContent = "Suppression en cours";
         chargement.classList.add("text-gray-500");
-        chargement.classList.remove("hidden", "text-green-500");
+        chargement.classList.remove("hidden", "text-green-500", "text-red-500");
         setTimeout(() => {
     chargement.classList.add("hidden");
 }, 3000);
@@ -201,7 +212,7 @@ console.log("Bouton ajouter désactivé :", ajouter.disabled);
         form.reset();
         messageerreur.classList.add("hidden");
         chargement.textContent = "Supprimer avec succés";
-        chargement.classList.remove("hidden");
+        chargement.classList.remove("hidden", "text-red-500", "text-gray-500");
         setTimeout(() => {
     chargement.classList.add("hidden");
 }, 3000);
@@ -214,7 +225,7 @@ console.log("Bouton ajouter désactivé :", ajouter.disabled);
         messageerreur.textContent = erreur.message;
         chargement.textContent = "Echec de Suppression!!";
         chargement.classList.add("text-red-500");  
-        chargement.classList.remove("hidden");
+        chargement.classList.remove("hidden", "text-green-500", "text-gray-500");
         setTimeout(() => {
     chargement.classList.add("hidden");
 }, 3000);
@@ -244,7 +255,7 @@ console.log("Bouton ajouter désactivé :", ajouter.disabled);
         return;
     }
     ajouter.disabled = true ;
-    chargement.classList.remove("hidden", "text-green-500");
+    chargement.classList.remove("hidden", "text-green-500", "text-red-500");
     chargement.textContent = "Ajout en cours";
     chargement.classList.add("text-gray-500");
     setTimeout(() => {
@@ -259,7 +270,7 @@ try {
     messageerreur.classList.add("hidden");
     chargement.textContent = "Ajouter avec succés";
     chargement.classList.add("text-green-500");
-    chargement.classList.remove("hidden");
+    chargement.classList.remove("hidden", "text-gray-500", "text-red-500");
     setTimeout(() => {
     chargement.classList.add("hidden");
 }, 3000);
@@ -267,7 +278,7 @@ try {
     messageerreur.classList.remove("hidden");
     messageerreur.textContent = erreur.message;
     chargement.textContent = "Echec d'ajout!!";
-    chargement.classList.remove("hidden");
+    chargement.classList.remove("hidden", "text-green-500", "text-gray-500");
     setTimeout(() => {
     chargement.classList.add("hidden");
 }, 3000);

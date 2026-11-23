@@ -114,6 +114,7 @@ export function getid(){
 
 export function resetmode(){
     mode = null;
+    articleId = null;
 }
 
 // affcher les cartes dans la page 

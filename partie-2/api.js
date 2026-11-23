@@ -1,11 +1,30 @@
 // Get data 
 
 export async function recupererArticle(){
-    const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
-        method : "GET"
-    });
-    const data = await response.json();
-    return data;
+    try {
+        const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+            method : "GET"
+        });
+        if (!response.ok){
+            if (response.status === 404){
+                throw new Error("Article Introuvable (404)");
+            
+            } else if (response.status === 500){
+                throw new Error("Erreur interne du serveur (500)");
+        }else {
+            throw new Error("Erreur HTTP : " + response.status);
+            
+        }
+    }
+        const data = await response.json();
+        return data;
+        
+    } catch (error) {
+                if (error instanceof TypeError) {
+            throw new Error("Erreur réseau : vérifiez votre connexion Internet.");
+        }
+        throw error;  
+    }
 }
 
 // Add data 
