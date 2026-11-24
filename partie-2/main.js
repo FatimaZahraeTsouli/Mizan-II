@@ -17,10 +17,46 @@ const chargement = document.getElementById("chargement");
 const form = document.getElementById("form");
 const reessayer = document.getElementById("reessayer");
 
+// local storage 
+let preference = { 
+    tri : trierinput.value,
+    filtre : statutinput.value
+};
+
+function sauvegarder(){
+    preference.tri = trierinput.value;
+    preference.filtre = statutinput.value
+    localStorage.setItem("preferences" ,JSON.stringify(preference));
+}
+
+function chargerpreference(){
+    const result = localStorage.getItem("preferences");
+    if (result){
+    const resultats = JSON.parse(result);
+    trierinput.value = resultats.tri;
+    statutinput.value = resultats.filtre;
+    return resultats;
+    }
+    else {
+        preference.tri = trierinput.value;
+        preference.filtre = statutinput.value;
+        return preference;
+    }
+}
 
 
-// creer les carte dynamiquement
-// ajouter data supplémentaire
+
+
+
+
+
+
+
+
+
+
+
+// creer les carte dynamiquement et ajouter data supplémentaire
 let tableauarticles = [];
 async function chargerarticle(){
 reessayer.classList.add("hidden");
@@ -39,7 +75,10 @@ try {
 }));
     chargement.textContent = "Chargés avec succés";
     chargement.classList.add("text-green-500");
-    afficherArticles(tableauarticles);
+    const preferences = chargerpreference();
+    const articlesFiltres = filtrer(tableauarticles, statutinput);
+    const articlesTries = trier(articlesFiltres, preferences.tri);
+    afficherArticles(articlesTries);
 } catch (error) {
     chargement.textContent = error.message;
     chargement.classList.add("text-red-500");
@@ -73,12 +112,14 @@ rechercherinput.addEventListener("input", function(){
 statutinput.addEventListener("change", function(){
     const resultats = filtrer(tableauarticles, statutinput);
     afficherArticles(resultats);
+    sauvegarder();
 })
 
 // trier data 
 trierinput.addEventListener("change", function(){
     const resultats = trier(tableauarticles, trierinput.value);
     afficherArticles(resultats);
+    sauvegarder()
 })
 
 // ajouter un article 
